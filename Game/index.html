@@ -1,0 +1,76 @@
+﻿<html>
+<head>
+    <title>封神传奇</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta content="IE=11.00" http-equiv="X-UA-Compatible" />
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=0.5, maximum-scale=0.5">
+    
+ 
+    <style>
+        canvas {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+        }
+    </style>
+
+    <script src="h5web.min.js"></script>
+
+
+
+    <script>
+        var game;
+        function init() {
+    
+            addEvents();
+            Engine.init(document.getElementById('P8_M60_chart_canvas1'));
+           // SceneManager.getInstance().loadScene("car.xml");
+            game = new GameStart();
+            game.init();
+
+            UiStage.getInstance().init(document.getElementById('contentTxtCanvas'))
+            setInterval("update()", 1000 / 60);
+
+            resetSize()
+
+          
+        }
+ 
+        function addEvents()
+        {
+            var mc = new Hammer.Manager(document.getElementById('P8_M60_chart_canvas1'));
+            mc.add(new Hammer.Pan({ threshold: 0, pointers: 0 }));
+            mc.add(new Hammer.Swipe()).recognizeWith(mc.get('pan'));
+            mc.add(new Hammer.Rotate({ threshold: 0 })).recognizeWith(mc.get('pan'));
+            mc.add(new Hammer.Pinch({ threshold: 0 })).recognizeWith([mc.get('pan'), mc.get('rotate')]);
+            mc.add(new Hammer.Tap({ event: 'doubletap', taps: 2 }));
+            mc.add(new Hammer.Tap());
+            UiStage.getInstance().mouseDis = mc;
+            UIManager.getInstance().regEvent(mc);
+        }
+
+        function resetSize() {
+            Engine.resetSize();
+            UiStage.getInstance().resetSize();
+        }
+
+        function update() {
+            Engine.update();
+            UiStage.getInstance().upData()
+            
+        }
+
+    </script>
+</head>
+<body onload='init()' onresize="resetSize()" ontouchmove="event.preventDefault()" style="overflow-x: hidden; overflow-y: hidden">
+    <div>
+        <canvas id="P8_M60_chart_canvas1" width="800" height="600" style="z-index:1"></canvas>
+        <canvas id="contentTxtCanvas" width="400" height="50" style="z-index:0"></canvas>
+    </div>
+
+
+</body>
+</html>
